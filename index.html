@@ -232,11 +232,17 @@
                 <p class="text-xs text-slate-500" id="lblWeekLockNote">Go back to previous weeks to earn points. Future weeks unlock as the school year progresses!</p>
               </div>
 
-              <div class="flex items-center gap-2 w-full sm:w-auto">
-                <label for="challengeWeekSelect" class="text-xs font-bold text-slate-700 whitespace-nowrap" id="lblSelectChallengeWeek">Select Week:</label>
+              <div class="flex items-center gap-1.5 w-full sm:w-auto">
+                <label for="challengeWeekSelect" class="text-xs font-bold text-slate-700 whitespace-nowrap hidden sm:inline" id="lblSelectChallengeWeek">Select Week:</label>
+                <button onclick="changeChallengeWeek(-1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-2.5 py-2 rounded-xl border border-slate-300 text-xs transition flex items-center gap-1 shadow-sm">
+                  <i class="fa-solid fa-chevron-left"></i> <span id="lblPrevWeekText">Prev</span>
+                </button>
                 <select id="challengeWeekSelect" onchange="selectChallengeWeek(this.value)" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cardinal-600">
                   <!-- Populated via JS -->
                 </select>
+                <button onclick="changeChallengeWeek(1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-2.5 py-2 rounded-xl border border-slate-300 text-xs transition flex items-center gap-1 shadow-sm">
+                  <span id="lblNextWeekText">Next</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
               </div>
             </div>
 
@@ -521,11 +527,17 @@
             <p class="text-xs text-slate-600" id="descCalendarHeader">2026–2027 TPS Academic Calendar & ECMS Cardinal Family Series Event Schedule.</p>
           </div>
 
-          <div class="flex items-center gap-2 w-full md:w-auto">
-            <label for="weekSelect" class="text-xs font-bold text-slate-700 whitespace-nowrap" id="lblJumpWeek">Jump to Week:</label>
-            <select id="weekSelect" onchange="renderWeekDetails(this.value)" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl px-4 py-2.5 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-cardinal-600">
+          <div class="flex items-center gap-1.5 w-full md:w-auto">
+            <label for="weekSelect" class="text-xs font-bold text-slate-700 whitespace-nowrap hidden sm:inline" id="lblJumpWeek">Jump to Week:</label>
+            <button onclick="changeCalendarWeek(-1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-2.5 rounded-xl border border-slate-300 text-xs transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-chevron-left"></i> <span id="lblCalPrevWeekText">Prev Week</span>
+            </button>
+            <select id="weekSelect" onchange="renderWeekDetails(this.value)" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl px-3 py-2.5 w-full md:w-56 focus:outline-none focus:ring-2 focus:ring-cardinal-600">
               <!-- Weeks 1-37 populated via JS -->
             </select>
+            <button onclick="changeCalendarWeek(1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-2.5 rounded-xl border border-slate-300 text-xs transition flex items-center gap-1 shadow-sm">
+              <span id="lblCalNextWeekText">Next Week</span> <i class="fa-solid fa-chevron-right"></i>
+            </button>
           </div>
         </div>
 
@@ -1431,7 +1443,10 @@
 
   <!-- STUDENT AUTH MODAL -->
   <div id="modalStudentAuth" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 border border-slate-200">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 border border-slate-200 relative">
+      <button onclick="closeModal('modalStudentAuth')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold p-1 transition" title="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
       <div class="text-center space-y-1">
         <div class="w-14 h-14 bg-cardinal-600 text-white rounded-full flex items-center justify-center text-2xl mx-auto shadow-md">
           <i class="fa-solid fa-passport"></i>
@@ -1776,6 +1791,8 @@
       setElemText('titleMorphCard', isEn ? 'Weekly Mental Challenge: Morphology' : 'Desafío Mental Semanal: Morfología');
       setElemText('lblWeekLockNote', isEn ? 'Go back to previous weeks to earn points. Future weeks unlock as the school year progresses!' : 'Regrese a semanas anteriores para ganar puntos. ¡Las semanas futuras se desbloquean a medida que avanza el año escolar!');
       setElemText('lblSelectChallengeWeek', isEn ? 'Select Week:' : 'Seleccionar Semana:');
+      setElemText('lblPrevWeekText', isEn ? 'Prev' : 'Ant');
+      setElemText('lblNextWeekText', isEn ? 'Next' : 'Sig');
       setElemText('titleDinnerPrompts', isEn ? 'Weekly Dinner Table Family Reflections' : 'Reflexiones Familiares para la Cena');
       setElemText('descDinnerPrompts', isEn ? 'Use these reflection prompts together at dinner for family connection!' : '¡Use estas preguntas juntos durante la cena para conectarse en familia!');
       setElemText('p1Tag', isEn ? 'Prompt #1 - Reflection' : 'Pregunta #1 - Reflexión');
@@ -1838,6 +1855,8 @@
       setElemText('titleCalendarHeader', isEn ? '37-Week Curriculum Navigator' : 'Navegador Curricular de 37 Semanas');
       setElemText('descCalendarHeader', isEn ? '2026–2027 TPS Academic Calendar & ECMS Cardinal Family Series Event Schedule.' : 'Calendario Académico TPS 2026–2027 y Agenda de la Serie Familiar Cardenal ECMS.');
       setElemText('lblJumpWeek', isEn ? 'Jump to Week:' : 'Ir a la Semana:');
+      setElemText('lblCalPrevWeekText', isEn ? 'Prev Week' : 'Semana Ant');
+      setElemText('lblCalNextWeekText', isEn ? 'Next Week' : 'Semana Sig');
       setElemText('lblJumpMonthTheme', isEn ? 'Jump to Month Theme:' : 'Ir al Tema del Mes:');
       setElemText('lblSeriesSpotlight', isEn ? 'Official ECMS Family Series' : 'Serie Familiar Oficial de ECMS');
       setElemText('lblSeriesFeedbackBadge', isEn ? '⭐ LIVE EVENT FEEDBACK (+100 PTS)' : '⭐ COMENTARIOS DE EVENTO EN VIVO (+100 PTS)');
@@ -2330,15 +2349,63 @@
       });
     }
 
+    function changeChallengeWeek(delta) {
+      let target = selectedChallengeWeekNum + delta;
+      if (target < 1) target = 1;
+      if (target > 37) target = 37;
+      selectedChallengeWeekNum = target;
+      const select = document.getElementById('challengeWeekSelect');
+      if (select) select.value = target;
+      renderSelectedChallengeBox();
+    }
+
+    function changeCalendarWeek(delta) {
+      const select = document.getElementById('weekSelect');
+      if (!select) return;
+      let currentVal = parseInt(select.value) || 1;
+      let newVal = currentVal + delta;
+      if (newVal < 1) newVal = 1;
+      if (newVal > 37) newVal = 37;
+      select.value = newVal;
+      renderWeekDetails(newVal);
+    }
+
     function selectChallengeWeek(weekNum) {
       selectedChallengeWeekNum = parseInt(weekNum);
+      const select = document.getElementById('challengeWeekSelect');
+      if (select) select.value = selectedChallengeWeekNum;
       renderSelectedChallengeBox();
+    }
+
+    function updateHeroBannerForWeek(weekNum) {
+      const w = WEEKS_DATA.find(item => item.number === weekNum) || WEEKS_DATA[0];
+      const isEn = currentLang === 'en';
+      const isCurrent = w.number === CURRENT_ACTIVE_WEEK;
+
+      const heroBadge = document.getElementById('lblCurrentWeekBadge');
+      if (heroBadge) {
+        heroBadge.innerText = isCurrent 
+          ? (isEn ? `THIS WEEK (Week ${w.number}) ⭐` : `ESTA SEMANA (Semana ${w.number}) ⭐`)
+          : (isEn ? `Week ${w.number} of 37` : `Semana ${w.number} de 37`);
+      }
+
+      const heroDates = document.getElementById('lblWeekDatesHeader');
+      if (heroDates) heroDates.innerText = w.datesStr;
+
+      const heroTitle = document.getElementById('heroTitle');
+      if (heroTitle) {
+        heroTitle.innerText = isEn 
+          ? `Week ${w.number} Morphology: "${w.morphology.root}"`
+          : `Semana ${w.number} Morfología: "${w.morphology.root}"`;
+      }
     }
 
     function renderSelectedChallengeBox() {
       const box = document.getElementById('challengeDetailsBox');
       const isEn = currentLang === 'en';
       const w = WEEKS_DATA.find(item => item.number === selectedChallengeWeekNum) || WEEKS_DATA[0];
+
+      updateHeroBannerForWeek(w.number);
 
       const isCurrent = w.number === CURRENT_ACTIVE_WEEK;
       const isPast = w.number < CURRENT_ACTIVE_WEEK;
