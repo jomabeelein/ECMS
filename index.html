@@ -168,38 +168,62 @@
     <!-- ==================== TAB 1: HOME / ACTIVE QUEST ==================== -->
     <section id="tab-home" class="tab-content space-y-6">
       
-      <!-- TONIGHT'S LIVE EVENT BANNER (HISPANIC HERITAGE NIGHT - SEPT 17, 2026) -->
-      <div class="bg-gradient-to-r from-amber-500 via-rose-600 to-cardinal-700 text-white rounded-2xl p-6 shadow-2xl space-y-4 border border-amber-300 ring-2 ring-amber-400/50">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/20 pb-4">
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span class="bg-amber-300 text-slate-950 font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider animate-pulse flex items-center gap-1">
-                <i class="fa-solid fa-star text-amber-800"></i> <span id="lblTonightEventBadge">TONIGHT'S FEATURED EVENT! (Sept 17)</span>
-              </span>
-              <span class="bg-white/20 text-white font-bold text-xs px-2.5 py-0.5 rounded-full">+200 Pts Attendance Bonus</span>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-black font-title text-white">ECMS Hispanic Heritage Night</h2>
-            <p class="text-xs sm:text-sm text-rose-100 max-w-xl">
-              5:30 PM – 7:00 PM at East Central Middle School • FREE Dinner Provided! Experience music, dance, art, & literature.
-            </p>
+      <!-- ROTATING FEATURE SPOTLIGHT BANNER (SEPTEMBER 20 SPOTLIGHT: CITY YEAR & POWERSCHOOL) -->
+      <div class="bg-gradient-to-r from-cardinal-800 via-rose-700 to-amber-600 text-white rounded-2xl p-6 shadow-2xl space-y-4 border border-amber-300 ring-2 ring-amber-400/40">
+        <div class="flex items-center justify-between border-b border-white/20 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-amber-300 text-slate-950 font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
+              <i class="fa-solid fa-arrows-rotate text-cardinal-900"></i> <span id="lblRotatingFeatureBadge">ROTATING FEATURE SPOTLIGHT</span>
+            </span>
+            <span class="bg-white/20 text-white font-bold text-xs px-2.5 py-0.5 rounded-full" id="lblRotatingDate">Sept 20, 2026 Update</span>
           </div>
-
-          <!-- Passcode verification input directly on Home tab -->
-          <div class="bg-white/10 backdrop-blur p-4 rounded-xl border border-white/30 space-y-2 w-full md:w-72">
-            <span class="block text-xs font-bold text-amber-200 text-center uppercase tracking-wide">Enter Tonight's Passcode:</span>
-            <input type="text" id="homeHeritagePasscode" placeholder="Enter Passcode" class="w-full text-center uppercase tracking-widest font-mono font-black text-base bg-slate-950/80 border border-amber-300/50 rounded-xl py-2 text-amber-300 placeholder-rose-200/50 focus:outline-none focus:ring-2 focus:ring-amber-300">
-            <button onclick="verifyLiveEventPasscode('Sept 17 Hispanic Heritage', 'homeHeritagePasscode', 'HERITAGE26')" class="w-full gold-gradient hover:opacity-95 text-slate-950 font-extrabold text-xs py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-key text-slate-950"></i>
-              <span>Claim +200 Pts Bonus!</span>
-            </button>
-          </div>
+          <span class="text-xs text-amber-200 font-semibold hidden sm:inline" id="lblCampusFocus">ECMS Cardinal Student Success Focus</span>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs pt-1">
-          <span class="text-rose-100 font-semibold"><i class="fa-solid fa-clipboard-check text-amber-300 mr-1"></i> Attended tonight? Also take the 1-minute Live Event Feedback Survey for an extra +100 Pts!</span>
-          <button onclick="openLiveEventSurveyModal()" class="bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-2 rounded-lg border border-white/30 transition whitespace-nowrap">
-            <i class="fa-solid fa-star text-amber-300 mr-1"></i> Take Event Survey (+100 Pts)
-          </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- SPOTLIGHT 1: CITY YEAR TUTORING -->
+          <div class="bg-white/10 backdrop-blur p-4 rounded-xl border border-white/20 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <span class="bg-amber-400 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Tue – Thu After School</span>
+                <i class="fa-solid fa-book-open-reader text-amber-300 text-lg"></i>
+              </div>
+              <h3 class="font-extrabold text-base text-white font-title" id="lblSpotlightCityYearTitle">City Year After-School Tutoring</h3>
+              <p class="text-xs text-rose-100 mt-1" id="lblSpotlightCityYearDesc">
+                Free academic support, homework help, & 1-on-1 mentorship for ECMS students! Register digitally via OpenSign consent forms.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="switchTab('tab-tutoring')" class="flex-1 gold-gradient hover:opacity-95 text-slate-950 font-extrabold text-xs py-2 px-3 rounded-lg shadow transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-user-plus text-slate-950"></i>
+                <span id="btnSpotlightRegisterTutoring">Register for Tutoring</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- SPOTLIGHT 2: POWERSCHOOL ACCESS & ATTENDANCE -->
+          <div class="bg-white/10 backdrop-blur p-4 rounded-xl border border-white/20 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <span class="bg-emerald-400 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">First Bell: 9:15 AM</span>
+                <i class="fa-solid fa-chart-line text-emerald-300 text-lg"></i>
+              </div>
+              <h3 class="font-extrabold text-base text-white font-title" id="lblSpotlightPowerSchoolTitle">Track Grades & Attendance in PowerSchool</h3>
+              <p class="text-xs text-rose-100 mt-1" id="lblSpotlightPowerSchoolDesc">
+                Ensure access to PowerSchool to keep track of period-by-period attendance, zero-tardy bonuses (+50 Pts), and current grades!
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="openTalkingPointsModal()" class="flex-1 bg-white/20 hover:bg-white/30 text-white font-bold text-xs py-2 px-3 rounded-lg border border-white/30 transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-comments text-amber-300"></i>
+                <span id="btnSpotlightTalkingPoints">Need PowerSchool Access?</span>
+              </button>
+              <button onclick="switchTab('tab-attendance')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs py-2 px-3 rounded-lg shadow transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span id="btnSpotlightAttendance">Attendance Hub</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1634,7 +1658,7 @@
   <script>
     // ==================== GLOBAL STATE & CONFIGURATION ====================
     let currentLang = 'en';
-    const CURRENT_ACTIVE_WEEK = 4;
+    const CURRENT_ACTIVE_WEEK = 5;
     // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaKz16jXGho-uMthg9dX4RvgsjPkCjyriF-qBpexCGZYR-H_HKTY5eTIE1pepMwgSk/exec';
 
@@ -1735,7 +1759,9 @@
       populateChallengeWeekDropdown();
       renderSelectedChallengeBox();
       populateWeekDropdown();
-      renderWeekDetails(1);
+      renderWeekDetails(CURRENT_ACTIVE_WEEK);
+      const calWeekSelect = document.getElementById('weekSelect');
+      if (calWeekSelect) calWeekSelect.value = CURRENT_ACTIVE_WEEK;
       renderLeaderboard();
       renderPrizeTiers();
       renderGoalsGrid();
@@ -1783,8 +1809,17 @@
       setElemText('tabNameAdmin', isEn ? 'Staff Back-End' : 'Portal de Personal');
 
       // Home Tab - Quests & Prompts
-      setElemText('lblTonightEventBadge', isEn ? "TONIGHT'S FEATURED EVENT! (Sept 17)" : "¡EVENTO DESTACADO DE ESTA NOCHE! (17 de Sep)");
-      setElemText('lblCurrentWeekBadge', isEn ? 'THIS WEEK (Week 4) ⭐' : 'ESTA SEMANA (Semana 4) ⭐');
+      setElemText('lblRotatingFeatureBadge', isEn ? 'ROTATING FEATURE SPOTLIGHT' : 'ENFOQUE DESTACADO ROTATIVO');
+      setElemText('lblRotatingDate', isEn ? 'Sept 20, 2026 Update' : 'Actualización del 20 de Sep, 2026');
+      setElemText('lblCampusFocus', isEn ? 'ECMS Cardinal Student Success Focus' : 'Enfoque en el Éxito Estudiantil Cardenal ECMS');
+      setElemText('lblSpotlightCityYearTitle', isEn ? 'City Year After-School Tutoring' : 'Tutoría de City Year Después de Clases');
+      setElemText('lblSpotlightCityYearDesc', isEn ? 'Free academic support, homework help, & 1-on-1 mentorship for ECMS students! Register digitally via OpenSign consent forms.' : '¡Apoyo académico gratuito, ayuda con tareas y mentoría 1 a 1 para estudiantes de ECMS! Inscríbase digitalmente a través de OpenSign.');
+      setElemText('btnSpotlightRegisterTutoring', isEn ? 'Register for Tutoring' : 'Inscribirse en Tutoría');
+      setElemText('lblSpotlightPowerSchoolTitle', isEn ? 'Track Grades & Attendance in PowerSchool' : 'Monitoree Calificaciones y Asistencia en PowerSchool');
+      setElemText('lblSpotlightPowerSchoolDesc', isEn ? 'Ensure access to PowerSchool to keep track of period-by-period attendance, zero-tardy bonuses (+50 Pts), and current grades!' : '¡Asegúrese de tener acceso a PowerSchool para seguir la asistencia por período, los bonos de cero tardanzas (+50 Pts) y las calificaciones!');
+      setElemText('btnSpotlightTalkingPoints', isEn ? 'Need PowerSchool Access?' : '¿Necesita Acceso a PowerSchool?');
+      setElemText('btnSpotlightAttendance', isEn ? 'Attendance Hub' : 'Centro de Asistencia');
+
       setElemText('heroTitle', isEn ? 'Morphology Quest: Unlocking Word Powers!' : '¡Misión de Morfología: Desbloqueando el Poder de las Palabras!');
       setElemText('heroDesc', isEn ? 'Navigate between weeks to complete previous challenges for points, or tackle this week\'s active challenge!' : 'Navegue entre semanas para completar desafíos anteriores por puntos, ¡o intente el desafío activo de esta semana!');
       setElemText('btnStartQuiz', isEn ? 'Take Weekly Quiz (+100 Pts)' : 'Iniciar Cuestionario (+100 Pts)');
