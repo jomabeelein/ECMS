@@ -104,6 +104,10 @@
           <span id="currentStudentNameDisplay" class="font-bold text-white text-sm">Alex Ramirez</span>
           <span id="currentStudentIDBadge" class="bg-black/30 text-amber-300 font-mono text-[11px] px-2 py-0.5 rounded border border-amber-400/30" title="3-Digit Passport Code">Code: 247</span>
           <span class="bg-amber-400 text-cardinal-900 font-bold px-2 py-0.5 rounded text-xs" id="studentGradeBadge">Grade 7</span>
+          <button onclick="openStudentAuthModal()" class="text-xs bg-white/20 hover:bg-white/30 text-white font-bold px-2.5 py-0.5 rounded-full border border-white/30 transition ml-1 flex items-center gap-1" title="Switch or Recall Saved Student Profile">
+            <i class="fa-solid fa-users text-amber-300"></i>
+            <span id="btnSwitchProfileRibbon">Switch User</span>
+          </button>
         </div>
 
         <div class="flex items-center space-x-4 font-bold">
@@ -1658,7 +1662,28 @@
   <script>
     // ==================== GLOBAL STATE & CONFIGURATION ====================
     let currentLang = 'en';
-    const CURRENT_ACTIVE_WEEK = 5;
+    
+    function calculateCurrentActiveWeek() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // ECMS School Year Start Date: Wednesday, Aug 19, 2026
+      const startDate = new Date(2026, 7, 19);
+      startDate.setHours(0, 0, 0, 0);
+
+      if (today < startDate) return 1;
+
+      const diffTime = today.getTime() - startDate.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const activeWeek = Math.floor(diffDays / 7) + 1;
+
+      if (activeWeek < 1) return 1;
+      if (activeWeek > 37) return 37;
+      return activeWeek;
+    }
+
+    let CURRENT_ACTIVE_WEEK = calculateCurrentActiveWeek();
+    let selectedChallengeWeekNum = CURRENT_ACTIVE_WEEK;
     // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaKz16jXGho-uMthg9dX4RvgsjPkCjyriF-qBpexCGZYR-H_HKTY5eTIE1pepMwgSk/exec';
 
@@ -1752,6 +1777,8 @@
 
     // ==================== INITIALIZATION & LOAD ====================
     window.addEventListener('DOMContentLoaded', () => {
+      CURRENT_ACTIVE_WEEK = calculateCurrentActiveWeek();
+      selectedChallengeWeekNum = CURRENT_ACTIVE_WEEK;
       loadSavedProfilesFromStorage();
       loadStateFromStorage();
       loadDynamicPasscodes();
@@ -1794,6 +1821,7 @@
       // Header & Branding
       setElemText('taglineHeader', isEn ? '"Many Stories. One Cardinal Community."' : '"¡Muchas Historias. Una Comunidad Cardenal!"');
       setElemText('btnHeaderSwitch', isEn ? 'Register / Login' : 'Registrarse / Iniciar Sesión');
+      setElemText('btnSwitchProfileRibbon', isEn ? 'Switch User' : 'Cambiar Estudiante');
       setElemText('lblFacebook', isEn ? 'ECMS Facebook' : 'Facebook de ECMS');
       setElemText('lblStudent', isEn ? 'Student:' : 'Estudiante:');
       setElemText('lblPts', isEn ? 'Pts' : 'Pts');
@@ -2053,6 +2081,18 @@
       const inputElem = document.getElementById(inputId);
       if (!inputElem) return;
       const code = inputElem.value.trim().toUpperCase();
+      if (!code) return;
+
+      if (!studentState.claimedPasscodes) studentState.claimedPasscodes = [];
+      const isEn = currentLang === 'en';
+
+      if (studentState.claimedPasscodes.includes(code)) {
+        alert(isEn
+          ? `Passcode "${code}" has ALREADY been claimed for ${studentState.name}!`
+          : `¡El código "${code}" YA ha sido reclamado para ${studentState.name}!`);
+        inputElem.value = '';
+        return;
+      }
 
       const heritagePasscodes = ['HERITAGE26', 'HERITAGE', 'HISPANIC', 'HERENCIA26', 'HERENCIA', 'SEP17', 'SEPT17', 'SEPTIEMBRE17', 'CARDINAL2026'];
       const isHeritageEvent = eventName.toLowerCase().includes('hispanic') || eventName.toLowerCase().includes('sept 17') || eventName.toLowerCase().includes('heritage');
@@ -2068,13 +2108,14 @@
         const pointsToAward = customMatch ? customMatch.pts : 200;
         const finalEventTitle = customMatch ? `${customMatch.type}` : eventName;
 
+        studentState.claimedPasscodes.push(code);
         if (!studentState.eventsAttended.includes(finalEventTitle)) {
           studentState.eventsAttended.push(finalEventTitle);
         }
-        const isEn = currentLang === 'en';
         addPoints(pointsToAward, isEn ? `Live Event Attendance: ${finalEventTitle}` : `Asistencia a Evento en Vivo: ${finalEventTitle}`);
         renderLeaderboard();
         renderBackendAnalytics();
+        saveActiveProfile(studentState);
         
         syncWithMasterSheet('logActivity', {
           studentName: studentState.name,
@@ -2085,8 +2126,8 @@
         });
 
         alert(isEn 
-          ? `🎉 EVENT ATTENDANCE VERIFIED!\n\n+${pointsToAward} Points added to ${studentState.name}'s Passport for "${finalEventTitle}"!\n\nThank you for celebrating and engaging with East Central Middle School!`
-          : `🎉 ¡ASISTENCIA A EVENTO VERIFICADA!\n\n¡+${pointsToAward} Puntos agregados al Pasaporte de ${studentState.name} por "${finalEventTitle}"!\n\n¡Gracias por celebrar y participar con East Central Middle School!`);
+          ? `🎉 EVENT ATTENDANCE VERIFIED!\n\n+${pointsToAward} Points added to ${studentState.name}'s Passport for "${finalEventTitle}"!\n\nPasscode "${code}" is saved to your passport!`
+          : `🎉 ¡ASISTENCIA A EVENTO VERIFICADA!\n\n¡+${pointsToAward} Puntos agregados al Pasaporte de ${studentState.name} por "${finalEventTitle}"!\n\nEl código "${code}" está guardado en su pasaporte.`);
       } else {
         alert(currentLang === 'en' 
           ? `Invalid passcode "${code}". Please check with staff or ask at the event!` 
@@ -2174,14 +2215,33 @@
 
     // ==================== NO-TARDIES PASSCODE & TALKINGPOINTS ====================
     function verifyNoTardyCode() {
-      const code = document.getElementById('noTardyCodeInput').value.trim().toUpperCase();
-      const validNoTardyCodes = ['NOTARDY', 'ONTIME50', 'LEIN915', 'CARDINAL50'];
+      const codeElem = document.getElementById('noTardyCodeInput');
+      if (!codeElem) return;
+      const code = codeElem.value.trim().toUpperCase();
+      if (!code) return;
 
-      if (validNoTardyCodes.includes(code)) {
-        document.getElementById('noTardyCodeInput').value = '';
-        addPoints(50, 'No-Tardies Weekly Attendance Bonus (Before 9:15 AM)');
+      if (!studentState.claimedPasscodes) studentState.claimedPasscodes = [];
+      const isEn = currentLang === 'en';
+
+      if (studentState.claimedPasscodes.includes(code)) {
+        alert(isEn 
+          ? `No-Tardies Passcode "${code}" has ALREADY been claimed for ${studentState.name}!` 
+          : `¡El código "${code}" YA ha sido reclamado para ${studentState.name}!`);
+        codeElem.value = '';
+        return;
+      }
+
+      const validNoTardyCodes = ['NOTARDY', 'ONTIME50', 'LEIN915', 'CARDINAL50'];
+      const customMatch = dynamicActivePasscodes.find(c => c.code === code);
+
+      if (validNoTardyCodes.includes(code) || !!customMatch) {
+        codeElem.value = '';
+        const pts = customMatch ? customMatch.pts : 50;
+        studentState.claimedPasscodes.push(code);
+        addPoints(pts, 'No-Tardies Weekly Attendance Bonus (Before 9:15 AM)');
+        saveActiveProfile(studentState);
       } else {
-        alert(currentLang === 'en' ? 'Invalid No-Tardies Passcode. Message Dr. Lein on TalkingPoints.' : 'Código no válido.');
+        alert(isEn ? `Invalid passcode "${code}". Message Dr. Lein on TalkingPoints.` : `Código no válido "${code}".`);
       }
     }
 
@@ -2267,7 +2327,11 @@
     }
 
     function saveActiveProfile(profile) {
+      if (!profile) return;
       localStorage.setItem('ecms_active_student_id', profile.id);
+      localStorage.setItem('ecms_active_student', JSON.stringify(profile));
+
+      if (!savedStudentProfiles) savedStudentProfiles = [];
       const existingIdx = savedStudentProfiles.findIndex(p => p.id === profile.id);
       if (existingIdx !== -1) {
         savedStudentProfiles[existingIdx] = profile;
@@ -2741,15 +2805,37 @@
     }
 
     function submitOsuPasscode() {
-      const code = document.getElementById('osuPasscodeInput').value.trim().toUpperCase();
-      const validCodes = ['OCT22', 'NOV12', 'NOV19', 'OCT20', 'NOV10', 'NOV17', 'OSU2026'];
-      if (validCodes.includes(code)) {
+      const inputElem = document.getElementById('osuPasscodeInput');
+      if (!inputElem) return;
+      const code = inputElem.value.trim().toUpperCase();
+      if (!code) return;
+
+      if (!studentState.claimedPasscodes) studentState.claimedPasscodes = [];
+      const isEn = currentLang === 'en';
+
+      if (studentState.claimedPasscodes.includes(code)) {
+        alert(isEn
+          ? `OSU Passcode "${code}" has ALREADY been claimed for ${studentState.name}!`
+          : `¡El código OSU "${code}" YA ha sido reclamado para ${studentState.name}!`);
+        inputElem.value = '';
         closeModal('modalOsuPasscode');
+        return;
+      }
+
+      const validCodes = ['OCT22', 'NOV12', 'NOV19', 'OCT20', 'NOV10', 'NOV17', 'OSU2026'];
+      const customMatch = dynamicActivePasscodes.find(c => c.code === code);
+
+      if (validCodes.includes(code) || !!customMatch) {
+        closeModal('modalOsuPasscode');
+        inputElem.value = '';
+        const pts = customMatch ? customMatch.pts : 200;
         const name = `OSU Workshop: ${code}`;
+        studentState.claimedPasscodes.push(code);
         if (!studentState.eventsAttended.includes(name)) studentState.eventsAttended.push(name);
-        addPoints(200, name);
+        addPoints(pts, name);
+        saveActiveProfile(studentState);
       } else {
-        alert('Invalid passcode. Please verify the code provided at your OSU workshop.');
+        alert(isEn ? 'Invalid passcode. Please verify the code provided at your OSU workshop.' : 'Código no válido.');
       }
     }
 
@@ -3290,14 +3376,37 @@ function jsonResponse(data) {
       }, 3500);
     }
 
-    function saveStateToStorage() { localStorage.setItem('ecms_passport_state', JSON.stringify(studentState)); }
+    function saveStateToStorage() {
+      if (studentState) {
+        localStorage.setItem('ecms_passport_state', JSON.stringify(studentState));
+        localStorage.setItem('ecms_active_student', JSON.stringify(studentState));
+        localStorage.setItem('ecms_active_student_id', studentState.id);
+      }
+    }
+
     function loadStateFromStorage() {
+      const savedActiveObj = localStorage.getItem('ecms_active_student') || localStorage.getItem('ecms_passport_state');
+      if (savedActiveObj) {
+        try {
+          const parsed = JSON.parse(savedActiveObj);
+          if (parsed && parsed.id) studentState = parsed;
+        } catch(e) {}
+      }
+
       const activeId = localStorage.getItem('ecms_active_student_id');
-      if (activeId && savedStudentProfiles.length > 0) {
+      if (activeId && savedStudentProfiles && savedStudentProfiles.length > 0) {
         const found = savedStudentProfiles.find(p => p.id === activeId);
         if (found) studentState = found;
       }
+
+      if (!studentState.claimedPasscodes) studentState.claimedPasscodes = [];
+      if (!studentState.eventsAttended) studentState.eventsAttended = [];
+      if (!studentState.completedQuestsList) studentState.completedQuestsList = [];
+      if (!studentState.claimedPrizes) studentState.claimedPrizes = [];
+      if (!studentState.goals) studentState.goals = [];
+
       checkAndUpdateStreakOnLoad();
+      saveActiveProfile(studentState);
     }
   </script>
 </body>
