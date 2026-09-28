@@ -1294,8 +1294,8 @@
   <!-- ==================== MODALS ==================== -->
 
   <!-- NEW: LIVE EVENT FEEDBACK SURVEY MODAL (3 QUESTIONS + COMMENTS + PASSCODE) -->
-  <div id="modalLiveEventSurvey" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+  <div id="modalLiveEventSurvey" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalLiveEventSurvey')">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 border border-slate-200" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b pb-3">
         <div>
           <h3 id="lblLiveEventSurveyTitle" class="font-extrabold text-lg text-cardinal-700">Live Event Feedback Survey</h3>
@@ -1365,8 +1365,8 @@
   </div>
 
   <!-- FAMILY ENGAGEMENT SURVEY MODAL (SURVEY #1) -->
-  <div id="modalFamilySurvey" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto border border-slate-200">
+  <div id="modalFamilySurvey" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalFamilySurvey')">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto border border-slate-200" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b pb-3">
         <div>
           <h3 id="lblFamilySurveyTitle" class="font-extrabold text-lg text-cardinal-700">ECMS Family & Guardian Survey</h3>
@@ -1446,8 +1446,8 @@
   </div>
 
   <!-- TALKINGPOINTS MODAL -->
-  <div id="modalTalkingPoints" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200 text-center">
+  <div id="modalTalkingPoints" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalTalkingPoints')">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200 text-center" onclick="event.stopPropagation()">
       <div class="w-14 h-14 bg-cardinal-100 text-cardinal-600 rounded-full flex items-center justify-center text-3xl mx-auto">
         <i class="fa-solid fa-comments"></i>
       </div>
@@ -1470,8 +1470,8 @@
   </div>
 
   <!-- STUDENT AUTH MODAL -->
-  <div id="modalStudentAuth" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 border border-slate-200 relative">
+  <div id="modalStudentAuth" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalStudentAuth')">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 border border-slate-200 relative" onclick="event.stopPropagation()">
       <button onclick="closeModal('modalStudentAuth')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold p-1 transition" title="Close">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -1529,8 +1529,8 @@
   </div>
 
   <!-- MORPHOLOGY QUIZ MODAL -->
-  <div id="modalMorphology" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+  <div id="modalMorphology" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalMorphology')">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 border border-slate-200" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b pb-3">
         <h3 class="font-extrabold text-lg text-cardinal-700 flex items-center gap-2">
           <i class="fa-solid fa-brain"></i> <span>Morphology Challenge Quiz</span>
@@ -1547,8 +1547,8 @@
   </div>
 
   <!-- OSU PASSCODE MODAL -->
-  <div id="modalOsuPasscode" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+  <div id="modalOsuPasscode" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalOsuPasscode')">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b pb-3">
         <h3 class="font-extrabold text-lg text-orange-600 flex items-center gap-2">
           <i class="fa-solid fa-key"></i> <span>Workshop Passcode Verification</span>
@@ -1569,8 +1569,8 @@
   </div>
 
   <!-- CREATE CUSTOM GOAL MODAL -->
-  <div id="modalAddGoal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+  <div id="modalAddGoal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalAddGoal')">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b pb-3">
         <h3 class="font-extrabold text-lg text-cardinal-700">Create Custom Student Goal</h3>
         <button onclick="closeModal('modalAddGoal')" class="text-slate-400 hover:text-slate-600 text-lg">
@@ -1618,8 +1618,8 @@
   </div>
 
   <!-- STAFF TALKINGPOINTS OUTREACH DRAFT MODAL -->
-  <div id="modalTalkingPointsDraft" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+  <div id="modalTalkingPointsDraft" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeModal('modalTalkingPointsDraft')">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-200" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b pb-3">
         <h3 class="font-extrabold text-lg text-cardinal-700 flex items-center gap-2">
           <i class="fa-solid fa-comments"></i> <span>TalkingPoints Outreach Generator</span>
@@ -1795,10 +1795,6 @@
       renderActivePasscodes();
       populateAppsScriptBox();
       renderBackendTables();
-
-      if (!localStorage.getItem('ecms_active_student_id')) {
-        document.getElementById('modalStudentAuth').classList.remove('hidden');
-      }
     });
 
     function setLanguage(lang) {
@@ -2294,6 +2290,7 @@
           claimedQuests: [],
           completedQuestsList: [],
           eventsAttended: [],
+          claimedPasscodes: [],
           claimedPrizes: [],
           punctualDays: [],
           goals: []
